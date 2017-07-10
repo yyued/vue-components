@@ -15,7 +15,7 @@ h1 {
 </style>
 
 <script>
-import pagination from '../pagination/index';
+import pagination from '../pagination';
 
 export default {
     components: {
@@ -23,7 +23,7 @@ export default {
     },
     data () {
         return {
-            total: 10,
+            total: 20,
             current: 1,
         };
     },

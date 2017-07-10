@@ -1,5 +1,76 @@
-import './index.style.scss';
+<style lang="scss" scoped>
+$mainColor: #1269D3;
+$borderColor: #eee;
 
+.pagination {
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    * {
+        -webkit-touch-callout: none;
+        user-select: none;
+    }
+    ul {
+        li {
+            height: 30px;
+            border: 1px solid $borderColor;
+            border-right: none;
+            padding: 0 10px;
+            color: $mainColor;
+            cursor: pointer;
+            display: inline-block;
+            &:last-of-type{
+                 border-right: 1px solid $borderColor;
+            }
+        }
+        .active {
+            border-color: $mainColor;
+            background-color: $mainColor;
+            color: #fff;
+        }
+        .more {
+            color: rgba(0, 0, 0, .2);
+            background-color: rgba(0, 0, 0, .02);   
+        }
+    }
+}    
+
+button {
+    padding: 0 5px;
+    min-width: 80px;
+    height: 30px;
+    background-color: #fff;
+    color: $mainColor;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.button-disable {
+    color: rgba(0, 0, 0, .2) !important;
+    background-color: rgba(0, 0, 0, .02) !important;   
+}
+
+.previous {
+    border: 1px solid $borderColor;
+    border-right: none;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.next {
+    border: 1px solid $borderColor;
+    border-left: none;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}    
+</style>
+
+<script>
 export default {
     props: {
         total: {
@@ -18,6 +89,10 @@ export default {
                 return v > 0;
             },
         },
+        customClass: {
+             type: String,
+             default: '',
+        }
     },
     data () {
         return {
@@ -71,7 +146,6 @@ export default {
             else if ( this.start + this.threshold < this.total ) {
                 this.end = this.start + this.threshold;
             }
-
         },
         pagesContent ( h ) {
             let pages = [];
@@ -82,10 +156,7 @@ export default {
                 num === this.current ? classObject = 'active' : '';
                 num === this.current ? onClickEvent = () => {} : '';
                 pages.push( 
-                    <li 
-                        class={ classObject } 
-                        onClick={ onClickEvent }
-                    >
+                    <li class={ classObject } onClick={ onClickEvent }>
                         { num }
                     </li>
                 );
@@ -120,16 +191,31 @@ export default {
 
     render ( h ) {
         this.pagesMarkup();
+        let previousButtonIsDistable = '';
+        if ( this.current == 1 ) {
+            previousButtonIsDistable = 'button-disable';
+        }
+        let nextButtonIsDistable = '';
+        if ( this.current == this.total ) {
+            nextButtonIsDistable = 'button-disable';
+        }
         return (
-            <div class="pagination">
-                <button class="previous" onClick={ () => this.chooseEvent('previous') } >Previous</button>
+            <div class={ [ "pagination", this.customClass ] }>
+                <button 
+                    onClick={ () => this.chooseEvent('previous') } 
+                    class={ [ 'previous', previousButtonIsDistable ] }
+                >Previous</button>
                 <ul>
                     { this.previousPages( h ) }
                     { this.pagesContent( h ) }
                     { this.nextPages( h ) }
                 </ul>
-                <button class="next" onClick={ () => this.chooseEvent('next') }>Next</button>
+                <button 
+                    onClick={ () => this.chooseEvent('next') }
+                    class={ ['next', nextButtonIsDistable] }
+                >Next</button>
             </div>
         );
     }
 };
+</script>
