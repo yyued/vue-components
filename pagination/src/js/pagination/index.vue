@@ -15,10 +15,10 @@ $borderColor: #eee;
     }
     ul {
         li {
+            padding: 0 10px;
             height: 30px;
             border: 1px solid $borderColor;
             border-right: none;
-            padding: 0 10px;
             color: $mainColor;
             cursor: pointer;
             display: inline-block;
@@ -188,7 +188,6 @@ export default {
             return pages;
         }
     },
-
     render ( h ) {
         this.pagesMarkup();
         let previousButtonIsDistable = '';
@@ -212,7 +211,7 @@ export default {
                 </ul>
                 <button 
                     onClick={ () => this.chooseEvent('next') }
-                    class={ ['next', nextButtonIsDistable] }
+                    class={ [ 'next', nextButtonIsDistable ] }
                 >Next</button>
             </div>
         );

@@ -1,7 +1,8 @@
 import component from './index.vue';
 
 Vue.prototype.$alert = ( args ) => {
-    const originData = component.data();
+    // 重构默认数据结构
+    const originData = Object.assign(component.data(), component.methods.reset());
 
     component.data = () => {
         return Object.assign(originData, args);
@@ -9,8 +10,8 @@ Vue.prototype.$alert = ( args ) => {
 
     component.el = document.createElement('div');
 
-    const componentConstructor = new Vue(component);
-	document.body.appendChild(componentConstructor.$el);
+    const componentConstructor = new Vue( component );
+	document.body.appendChild( componentConstructor.$el );
 
 	return componentConstructor;
 }

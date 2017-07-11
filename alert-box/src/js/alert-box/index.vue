@@ -1,10 +1,10 @@
 <template>
     <transition name="fade">
-        <div class="alert-box" v-show="isShow">
+        <div class="alert-box" v-show="isShow" @click="trigger( $event )">
             <div class="alert-box-content" :class="[ customClass ]">
                 <div class="alert-box-content-title">
                     {{ title }}
-                    <i v-once v-html="icon$close" @click="hide"></i>
+                    <i v-once v-html="icon$close" @click="trigger( $event )"></i>
                 </div>
                 <div class="alert-box-content-message">
                     <template v-if="message">
@@ -25,6 +25,30 @@
 </template>
 
 <style lang="scss">
+.alert-box .alert-box-content-title i {
+    svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+        path {
+            fill: rgba(0, 0, 0, .4);
+            transition: fill .2s ease;
+        }
+    }
+    &:hover {
+        svg path {
+            fill: rgba(0, 0, 0, .7);
+        }
+    }
+    &:active {
+        svg path {
+            fill: rgba(0, 0, 0, .9);
+        }
+    }
+}
+</style>
+
+<style lang="scss" scoped>
 .alert-box {
     position: fixed;
     top: 0;
@@ -79,25 +103,6 @@
         height: 15px;
         display: block;
         cursor: pointer;
-        svg {
-            width: 100%;
-            height: 100%;
-            display: block;
-            path {
-                fill: rgba(0, 0, 0, .4);
-                transition: fill .2s ease;
-            }
-        }
-        &:hover {
-            svg path {
-                fill: rgba(0, 0, 0, .7);
-            }
-        }
-        &:active {
-            svg path {
-                fill: rgba(0, 0, 0, .9);
-            }
-        }
     }
 }
 
@@ -128,16 +133,20 @@
 </style>
 
 <script>
+const originData = {
+    isShow: false,
+    title: 'title',
+    message: 'message',
+    buttons: [],
+    customClass: '',
+    vnode: void 0,
+    callback: void 0,
+    active: void 0,
+}
+
 export default {
     data () {
         return {
-            isShow: false,
-            title: 'title',
-            message: 'message',
-            buttons: [],
-            customClass: '',
-            vnode: void 0,
-            callback: void 0,
             icon$close: require('./close.raw.svg'),
         };
     },
@@ -154,22 +163,31 @@ export default {
                 this.hide();
             }, 3000);
         }
-        document.body.addEventListener('keyup', this.hide);
+        document.body.addEventListener('keyup', this.trigger);
     },
     beforeDestroy () {
 		this.$el.parentNode.removeChild( this.$el );
 	},
     methods: {
+        // 保持 immutable，_.cloneDeep
+        reset () {
+            return JSON.parse(JSON.stringify(originData));
+        },
         hide () {
             this.isShow = false;
             setTimeout( () => {
                 this.$destroy();
             }, 200);
-            document.body.removeEventListener('keyup', this.hide);
+            document.body.removeEventListener('keyup', this.trigger);
         },
-        clickEvent ( $index ) {
+        clickEvent ( index ) {
+            this.active = index;
+        },
+        trigger ( $event, $index ) {
             if ( this.callback ) {
-                this.callback( $index );
+                this.callback( 
+                    typeof this.active !== 'undefined' ? this.active : -1 
+                );
             }
             this.hide();
         },
