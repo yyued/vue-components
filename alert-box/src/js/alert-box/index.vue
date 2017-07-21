@@ -4,7 +4,9 @@
             <div class="alert-box-content" :class="[ customClass ]">
                 <div class="alert-box-content-title">
                     {{ title }}
-                    <i v-once v-html="icon$close" @click="trigger( $event )"></i>
+                    <i @click="trigger( $event )">
+                        <img src="./close.raw.svg" inline />
+                    </i>
                 </div>
                 <div class="alert-box-content-message">
                     <template v-if="message">
@@ -145,11 +147,6 @@ const originData = {
 }
 
 export default {
-    data () {
-        return {
-            icon$close: require('./close.raw.svg'),
-        };
-    },
     created () {
         if ( typeof this.message === 'object' ) {
             this.$slots.default = [ this.message ];
@@ -169,9 +166,8 @@ export default {
 		this.$el.parentNode.removeChild( this.$el );
 	},
     methods: {
-        // 保持 immutable，_.cloneDeep
-        reset () {
-            return JSON.parse(JSON.stringify(originData));
+        getOriginData () {
+            return JSON.parse( JSON.stringify( originData ) );
         },
         hide () {
             this.isShow = false;

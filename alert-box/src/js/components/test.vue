@@ -33,16 +33,18 @@ export default {
     data () {
         return {
             msg: 'foo',
+            testIndex: 1,
         }
     },
     methods: {
         clickEvent1 () {
             this.$alert({
                 title: 'foo',
-                message: 'bar',
+                message: 'bar-' + this.testIndex,
                 buttons: ['test'],
                 callback: ( index ) => {
                     console.log('alert box : ', index);
+                    ++this.testIndex;
                 }
             })
         },

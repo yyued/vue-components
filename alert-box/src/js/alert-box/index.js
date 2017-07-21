@@ -2,7 +2,7 @@ import component from './index.vue';
 
 Vue.prototype.$alert = ( args ) => {
     // 重构默认数据结构
-    const originData = Object.assign(component.data(), component.methods.reset());
+    const originData = component.methods.getOriginData();
 
     component.data = () => {
         return Object.assign(originData, args);
