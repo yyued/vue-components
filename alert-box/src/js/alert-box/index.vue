@@ -5,7 +5,7 @@
                 <div class="alert-box-content-title">
                     {{ title }}
                     <i @click="trigger( $event )">
-                        <img src="./close.raw.svg" inline />
+                        <img src="./close.svg" inline />
                     </i>
                 </div>
                 <div class="alert-box-content-message">
@@ -135,18 +135,19 @@
 </style>
 
 <script>
-const originData = {
-    isShow: false,
-    title: 'title',
-    message: 'message',
-    buttons: [],
-    customClass: '',
-    vnode: void 0,
-    callback: void 0,
-    active: void 0,
-}
-
 export default {
+    getOriginData () {
+        return Object.assign({}, {
+            isShow: false,
+            title: 'title',
+            message: 'message',
+            buttons: [],
+            customClass: '',
+            vnode: void 0,
+            callback: void 0,
+            active: void 0,
+        })
+    },
     created () {
         if ( typeof this.message === 'object' ) {
             this.$slots.default = [ this.message ];
@@ -166,9 +167,6 @@ export default {
 		this.$el.parentNode.removeChild( this.$el );
 	},
     methods: {
-        getOriginData () {
-            return JSON.parse( JSON.stringify( originData ) );
-        },
         hide () {
             this.isShow = false;
             setTimeout( () => {
