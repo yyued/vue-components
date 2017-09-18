@@ -2,7 +2,7 @@
     <!-- 复用 cell -->
     <div ref="list" class="list">
         <div class="content" :style="{ height: list.length * itemViewHeight + 'px' }">
-            <ul :style="{ transform: `translate3d(0,${ itemViewHeight * startIndex }px,0)` }">
+            <ul :style="{ transform: `translate3d(0, ${ itemViewHeight * startIndex }px, 0)` }">
                 <li v-for="(item, $index) in startLength" key="$index">
                     <img src="https://legox.org/img/30/30/57ad68/fff/">
                     {{ list[ startIndex + $index ] }}

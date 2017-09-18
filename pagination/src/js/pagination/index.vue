@@ -33,10 +33,11 @@ $borderColor: #eee;
         }
         .more {
             color: rgba(0, 0, 0, .2);
-            background-color: rgba(0, 0, 0, .02);   
+            background-color: rgba(0, 0, 0, .02);
+            cursor: default;
         }
     }
-}    
+}
 
 button {
     padding: 0 5px;
@@ -52,7 +53,8 @@ button {
 
 .button-disable {
     color: rgba(0, 0, 0, .2) !important;
-    background-color: rgba(0, 0, 0, .02) !important;   
+    background-color: rgba(0, 0, 0, .02) !important;
+    cursor: not-allowed;
 }
 
 .previous {
@@ -67,7 +69,7 @@ button {
     border-left: none;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
-}    
+}
 </style>
 
 <script>
@@ -127,7 +129,7 @@ export default {
                 } else {
                     this.start = 1;
                 }
-            } 
+            }
             else {
                 if ( this.current + this.threshold >= this.total ) {
                     if ( this.total - this.threshold > 0 ) {
@@ -142,7 +144,7 @@ export default {
 
             if ( this.start + this.threshold >= this.total ) {
                 this.end = this.total;
-            } 
+            }
             else if ( this.start + this.threshold < this.total ) {
                 this.end = this.start + this.threshold;
             }
@@ -155,7 +157,7 @@ export default {
                 let num = this.start + i;
                 num === this.current ? classObject = 'active' : '';
                 num === this.current ? onClickEvent = () => {} : '';
-                pages.push( 
+                pages.push(
                     <li class={ classObject } onClick={ onClickEvent }>
                         { num }
                     </li>
@@ -172,7 +174,7 @@ export default {
             }
             if ( this.start > 3 ) {
                 pages.push(<li class="more">...</li>);
-            }          
+            }
             return pages;
         },
         nextPages ( h ) {
@@ -200,8 +202,8 @@ export default {
         }
         return (
             <div class={ [ "pagination", this.customClass ] }>
-                <button 
-                    onClick={ () => this.chooseEvent('previous') } 
+                <button
+                    onClick={ () => this.chooseEvent('previous') }
                     class={ [ 'previous', previousButtonIsDistable ] }
                 >Previous</button>
                 <ul>
@@ -209,7 +211,7 @@ export default {
                     { this.pagesContent( h ) }
                     { this.nextPages( h ) }
                 </ul>
-                <button 
+                <button
                     onClick={ () => this.chooseEvent('next') }
                     class={ [ 'next', nextButtonIsDistable ] }
                 >Next</button>
